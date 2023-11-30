@@ -6,28 +6,27 @@ const JobProfileSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    personal: {
-        gender: {
-            type: String,
-            enum: ['MALE', 'FEMALE'],
-        },
-        state: {
-            type: String,
-        }
+    gender: {
+        type: String,
+        enum: ['MALE', 'FEMALE'],
+        required: true
     },
-    business: {
-        businessName: {
-            type: String,
-        },
-        field: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Categories"
-        },
-        tags: [{
-            type: String,
-            lowecase: true
-        }]
-    }
+    state: {
+        type: String,
+        required: true
+    },
+    businessName: {
+        type: String,
+        required: true
+    },
+    field: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Categories"
+    },
+    tags: [{
+        type: String,
+        lowecase: true
+    }]
     
 })
 

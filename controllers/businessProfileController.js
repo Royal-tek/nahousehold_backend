@@ -1,7 +1,7 @@
 const JobProfile = require("../models/JobProfile")
 const User = require("../models/User")
 const Category = require("../models/Categories")
-const {jobProfileSchema} = require("../validations/jobProfileValidation")
+const {jobProfileSchema, jobProfileUpdateSchema} = require("../validations/jobProfileValidation")
 
 
 exports.createProfile = async(req, res)=>{
@@ -14,11 +14,11 @@ exports.createProfile = async(req, res)=>{
 
     try {
         const {id} = req.user
-        const {business} = body.data
+        const {field} = body.data
         const checkUser = await User.findById(id)
         if(!checkUser) return res.status(400).json({error: "User not found"})
 
-        const checkCategory = await Category.findById(business.field)
+        const checkCategory = await Category.findById(field)
         if(!checkCategory) return res.status(400).json({error: "Invalid Category"})
 
         const checkIfProfileExists = await JobProfile.findOne({ user: checkUser._id})
@@ -26,9 +26,7 @@ exports.createProfile = async(req, res)=>{
 
         const createProfile = new JobProfile({
             user: checkUser._id,
-            business: {
-                field: checkCategory,
-            },
+            field: checkCategory._id,
             ...body.data
         })
         await createProfile.save()
@@ -55,7 +53,9 @@ exports.getProfile = async (req, res)=>{
 }
 
 exports.updateProfile = async (req, res)=>{
-    const body = jobProfileSchema.partial().safeParse(req.body)
+    const body = jobProfileUpdateSchema
+    .safeParse(req.body)
+
     if (!body.success) {
         return res.status(400).json({
             errors: body.error.issues,
@@ -65,10 +65,10 @@ exports.updateProfile = async (req, res)=>{
     try {
         const checkUser = await User.findById(id)
         if(!checkUser) return res.status(400).json({ error: "User not found"})
-
+        console.log(body.data);
         const updateProfile = await JobProfile.findOneAndUpdate({user: checkUser._id}, 
             {
-                ...body.data
+                $set: {...body.data}
             },
             {
                 new: true
