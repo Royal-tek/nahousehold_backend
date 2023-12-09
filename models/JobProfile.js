@@ -11,6 +11,10 @@ const JobProfileSchema = new Schema({
         enum: ['MALE', 'FEMALE'],
         required: true
     },
+    images: [{
+        type: String,
+        required: true
+    }],
     state: {
         type: String,
         required: true

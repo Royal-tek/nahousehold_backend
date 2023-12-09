@@ -16,3 +16,13 @@ exports.createCategory = async (req, res)=>{
         console.log(error);
     }
 }
+
+exports.getCategories = async (req, res)=>{
+    try {
+        const cats = await Category.find()
+        res.status(200).json(cats)
+    } catch (error) {
+        res.status(500).json(error)
+        console.log(error);
+    }
+}

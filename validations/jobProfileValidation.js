@@ -6,7 +6,8 @@ exports.jobProfileSchema = z.object({
     state: z.string(),
     businessName: z.string(),
     field: z.string(),
-    tags: z.string().array()
+    tags: z.string().array(),
+    images: z.string().array()
 }).strict()
 
 exports.jobProfileUpdateSchema = z.object({
@@ -14,6 +15,7 @@ exports.jobProfileUpdateSchema = z.object({
     state: z.string().optional(),
     businessName: z.string().optional(),
     field: z.string().optional(),
-    tags: z.string().array().optional()
+    tags: z.string().array().optional(),
+    images: z.string().array().optional()
 
 })

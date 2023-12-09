@@ -4,6 +4,28 @@ const Category = require("../models/Categories")
 const {jobProfileSchema, jobProfileUpdateSchema} = require("../validations/jobProfileValidation")
 
 
+exports.savePersonalInfo = async(req, res)=>{
+    const { id } = req.user
+    try {
+        const checkUser = await User.findById(id)
+        if(!checkUser) return res.status(400).json({error: "User not found"})
+
+        const createProfile = new JobProfile({
+            user: checkUser._id,
+            ...req.body
+        })
+        await createProfile.save()
+
+        res.status(200).json({message: "Profile personal information saved successfully", createProfile})
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error)
+    }
+}
+
+
 exports.createProfile = async(req, res)=>{
     const body = jobProfileSchema.safeParse(req.body)
     if (!body.success) {
@@ -42,7 +64,7 @@ exports.createProfile = async(req, res)=>{
 exports.getProfile = async (req, res)=>{
     const {id} = req.user
     try {
-        const getProfile = await JobProfile.findOne({ user: id })
+        const getProfile = await JobProfile.findOne({ user: id }).populate("field")
         if(!getProfile) return res.status(400).json({ error: "Profile not found"})
 
         res.status(200).json(getProfile)
