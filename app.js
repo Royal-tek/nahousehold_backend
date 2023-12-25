@@ -9,6 +9,7 @@ const userRoutes = require("./routers/userRoutes")
 const searchRoutes = require("./routers/searchRoutes")
 const categoryRoutes = require("./routers/categoryRoutes")
 const businessProfileRoutes = require("./routers/businessProfileRoutes")
+const AdRoutes = require("./routers/AdRouter")
 const uploadRoutes = require("./routers/uploadRoutes")
 const cors = require("cors")
 const cloudinary = require("cloudinary");
@@ -48,6 +49,7 @@ app.use("/api/search", searchRoutes)
 app.use("/api/category", categoryRoutes)
 app.use("/api/business-profile", businessProfileRoutes)
 app.use("/api/upload", uploadRoutes)
+app.use("/api/ads", AdRoutes)
 
 
 // connect DB

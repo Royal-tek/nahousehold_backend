@@ -43,7 +43,6 @@ exports.initializeSocket = (server)=>{
             const {error, user} = addUser(socket.id, name, room)
             console.log(user);
 
-            if(error) return callback(error)
             
             socket.emit("message", {user: 'admin', text: `${user.name} welcome to the room ${user.room}`})
             socket.broadcast.to(user.room).emit("message", { user: 'admin', text: `${user.name} has joined`})
@@ -55,10 +54,10 @@ exports.initializeSocket = (server)=>{
            
         })
 
-        socket.on("sendMessage", (message, callback)=>{
+        socket.on("sendMessage", (text, callback)=>{
             const user = getUser(socket.id)
             console.log(user);
-            io.to(user.room).emit("message", { user: user.name,  message})
+            io.to(user.room).emit("message", { user: user.name,  text})
 
         })
 
