@@ -73,3 +73,20 @@ exports.deleteAd = async(req, res)=>{
         console.log(error);
     }
 }
+
+exports.getUserAdverts = async(req, res)=>{
+    const { id } = req.user
+    try {
+        const checkUser = await User.findById(id)
+        if(!checkUser) return  res.status(400).json({ error: "User not found"})
+
+        const getAllAds = await Ad.find({ postedBy: checkUser._id})
+        if(getAllAds.length == 0) return res.status(400).json({ error: "No Ads found for user"})
+
+        res.status(200).json(getAllAds)
+        
+    } catch (error) {
+        res.status(500).json({error: error})
+        console.log(error);
+    }
+}
