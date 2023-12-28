@@ -55,7 +55,7 @@ exports.getAllAds = async(req, res)=>{
 exports.getAdById = async (req, res)=>{
     const { adId } = req.params
     try {
-        const getAd = await Ad.findById(adId)
+        const getAd = await Ad.findById(adId).populate("postedBy")
         res.status(200).json(getAd)
     } catch (error) {
         res.status(500).json({error: error})
