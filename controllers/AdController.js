@@ -44,7 +44,7 @@ exports.editAd = async(req, res)=>{
 
 exports.getAllAds = async(req, res)=>{
     try {
-        const allAds = await Ad.find()
+        const allAds = await Ad.find().populate("postedBy")
         res.status(200).json(allAds)
     } catch (error) {
         res.status(500).json({error: error})
