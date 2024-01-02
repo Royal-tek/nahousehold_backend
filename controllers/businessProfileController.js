@@ -80,7 +80,7 @@ exports.updateProfile = async (req, res)=>{
 exports.getProfileById = async(req, res)=>{
     const { id } = req.params
     try {
-        const getProfile = await JobProfile.findById(id).populate("user").populate("field")
+        const getProfile = await JobProfile.findById(id).populate("user")
         console.log(getProfile);
         if(!getProfile) return res.status(400).json({error: "Profile not found"})
 
