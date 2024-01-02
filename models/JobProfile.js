@@ -23,9 +23,13 @@ const JobProfileSchema = new Schema({
         type: String,
         required: true
     },
-    field: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Categories"
+    // field: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Categories"
+    // },
+    profileViews: {
+        type: Number,
+        default: 0
     },
     tags: [{
         type: String,
