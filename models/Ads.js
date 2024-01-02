@@ -22,6 +22,10 @@ const AdSchema = new Schema({
         type: Number,
         required: String
     },
+    state: {
+        type: String,
+        required: true
+    },
     sponsored: {
         type: Boolean,
         default: false

@@ -65,7 +65,7 @@ exports.getProfile = async (req, res)=>{
     const {id} = req.user
     try {
         const getProfile = await JobProfile.findOne({ user: id }).populate("field")
-        if(!getProfile) return res.status(400).json({ error: "Profile not found"})
+        if(!getProfile) return res.status(404).json({ error: "Profile not found"})
 
         res.status(200).json(getProfile)
     } catch (error) {
