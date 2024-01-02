@@ -39,7 +39,7 @@ exports.createProfile = async(req, res)=>{
 exports.getProfile = async (req, res)=>{
     const {id} = req.user
     try {
-        const getProfile = await JobProfile.findOne({ user: id }).populate("field")
+        const getProfile = await JobProfile.findOne({ user: id })
         if(!getProfile) return res.status(404).json({ error: "Profile not found"})
 
         res.status(200).json(getProfile)
