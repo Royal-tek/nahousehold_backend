@@ -17,7 +17,7 @@ exports.searchWithTagAndLocation = async (req, res)=>{
             return res.status(400).json({ error: "Specifications must be specified" });
         }
 
-        const searchResults = await JobProfile.find(query).populate('user').populate('field');
+        const searchResults = await JobProfile.find(query).populate('user');
 
         if (searchResults.length === 0) {
             return res.status(200).json([]);
