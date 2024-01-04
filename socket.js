@@ -32,7 +32,7 @@ exports.initializeSocket = (server)=>{
     }
 
     const getUsersInRoom = (room)=>{
-        users.filter((user) => user.room === room)
+        return users.filter((user) => user.room === room)
     }
 
     // For a user to connect to the socket
@@ -41,15 +41,26 @@ exports.initializeSocket = (server)=>{
 
         socket.on("joinRoom", ({ name, room}, callback) =>{
             const {error, user} = addUser(socket.id, name, room)
-            console.log(user);
+
+            if(error){
+                console.log("Username is taken");
+                return callback({ error })
+            }
 
             
             socket.emit("message", {user: 'admin', text: `${user.name} welcome to the room ${user.room}`})
             socket.broadcast.to(user.room).emit("message", { user: 'admin', text: `${user.name} has joined`})
             
-            io.to(user.room).emit("userJoined", { user })
-
             socket.join(user.room)
+
+            // Emit the updated number of users in the room
+            io.to(user.room).emit("getRoom", {
+                room: user.room,
+                users: getUsersInRoom(user.room),
+                
+            });
+
+            callback({user})
 
            
         })
