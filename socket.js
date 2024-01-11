@@ -60,9 +60,20 @@ exports.initializeSocket = (server)=>{
                 
             });
 
+            socket.on("fetchRoom", () => {
+                // Emit the current room data to the requesting client
+                io.to(socket.id).emit("getRoom", {
+                    room: user.room,
+                    users: getUsersInRoom(user.room),
+                    });
+                });
+
+            // Emit the current user information to the connected client
+            io.to(socket.id).emit("getCurrentUser", { user: user.name });
+
             callback({user})
 
-           
+                
         })
 
         socket.on("sendMessage", (text, callback)=>{
