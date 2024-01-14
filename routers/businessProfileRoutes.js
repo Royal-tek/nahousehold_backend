@@ -10,7 +10,7 @@ router.post("/create-profile", isAuthenticated, createProfile )
 router.get("/get-profile", isAuthenticated, getProfile )
 
 
-router.get("/get-profile/:id", isAuthenticated, getProfileById )
+router.get("/get-profile/:id", getProfileById )
 
 router.put("/update-profile", isAuthenticated, updateProfile )
 
