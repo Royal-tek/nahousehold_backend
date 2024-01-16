@@ -11,6 +11,7 @@ const categoryRoutes = require("./routers/categoryRoutes")
 const businessProfileRoutes = require("./routers/businessProfileRoutes")
 const AdRoutes = require("./routers/AdRouter")
 const uploadRoutes = require("./routers/uploadRoutes")
+const adminRoutes = require("./routers/adminRouter")
 const cors = require("cors")
 const cloudinary = require("cloudinary");
 const {initializeSocket} = require('./socket')
@@ -52,6 +53,7 @@ app.use("/api/category", categoryRoutes)
 app.use("/api/business-profile", businessProfileRoutes)
 app.use("/api/upload", uploadRoutes)
 app.use("/api/ads", AdRoutes)
+app.use("/api/admin", adminRoutes)
 
 
 // connect DB

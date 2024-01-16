@@ -18,4 +18,3 @@ router.delete("/:adId", deleteAd)
 
 
 module.exports = router
-// Just so i can push
