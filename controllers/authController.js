@@ -2,6 +2,7 @@ const User = require("../models/User")
 const hash = require("../helpers/auth")
 const userValidation = require("../validations/userValidation")
 const tokens = require("../helpers/token")
+const {sendMail} = require("../helpers/mail")
 
 exports.createUser = async (req, res)=>{
     const body = userValidation.userSchema.safeParse(req.body)
@@ -24,6 +25,14 @@ exports.createUser = async (req, res)=>{
             password: hashedPwd
         })
         await newUser.save()
+
+        await sendMail({
+            from: "Nahousehold <info@nahousehold.com>",
+            to: [email],
+            html: "Hey There!, Thanks for joining. We're thrilled to have you. Get ready for some amazing deals and updates",
+            subject: "Welcome to Nahousehold",
+        });
+
         res.status(200).json(newUser)
     } catch (error) {
         console.log(error);
@@ -75,7 +84,13 @@ exports.forgotPassword = async(req, res)=>{
         checkEmail.otpExpiresIn = new Date().getTime()
         await checkEmail.save()
 
-        res.status(200).json({otp: otp})
+        res.status(200).json({message: "OTP has been sent your email"})
+        await sendMail({
+            from: "Nahousehold <info@nahousehold.com>",
+            to: [email],
+            html: `Oops, seems you forgot your password, no problem, just use this code <span style='font-weight:bold'> ${otp} </span> to complete the reset process`,
+            subject: "Forgot Password",
+        });
 
     } catch (error) {
         console.log(error);
@@ -140,6 +155,12 @@ exports.resetPasswordFromResetFlow = async (req, res)=>{
         checkUser.password = password
         await checkUser.save()
         res.status(200).json({message: "Password changed successfully"})
+        await sendMail({
+            from: "Nahousehold <info@nahousehold.com>",
+            to: [checkUser.email],
+            html: `Your Password has been changed successfully.`,
+            subject: "Password Reset Succesfully",
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json(error)

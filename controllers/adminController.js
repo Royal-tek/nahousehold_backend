@@ -1,4 +1,5 @@
 const User = require("../models/User")
+const Ad = require("../models/Ads")
 
 exports.getAllUsers = async(req, res)=>{
     try {
@@ -13,6 +14,16 @@ exports.getAllUsers = async(req, res)=>{
 
     } catch (error) {
         res.status(500).json(error)
+        console.log(error);
+    }
+}
+
+exports.getAllAds = async(req, res)=>{
+    try {
+        const allAds = await Ad.find().populate("postedBy")
+        res.status(200).json(allAds)
+    } catch (error) {
+        res.status(500).json({error: error})
         console.log(error);
     }
 }
