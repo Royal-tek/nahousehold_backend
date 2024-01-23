@@ -39,6 +39,17 @@ exports.initializeSocket = (server)=>{
     io.on("connection", (socket)=>{
         console.log("User has connected");
 
+        socket.on("leaveRoom", () => {
+            const user = removeUser(socket.id);
+        
+            if (user) {
+              socket.broadcast.to(user.room).emit("message", { user: 'admin', text: `${user.name} has left` })
+        
+              // Optionally, you can disconnect the socket
+              socket.disconnect();
+            }
+          });
+
         socket.on("joinRoom", ({ name, room}, callback) =>{
             const {error, user} = addUser(socket.id, name, room)
 
@@ -86,6 +97,7 @@ exports.initializeSocket = (server)=>{
 
     
         socket.on("disconnect", ()=>{
+            removeUser(socket.id)
             console.log("User has disconnected");
         })
     })
