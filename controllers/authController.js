@@ -152,7 +152,10 @@ exports.resetPasswordFromResetFlow = async (req, res)=>{
         const checkPwd = await hash.compare(password, checkUser.password)
         if(checkPwd) return res.status(400).json({error: "New password cannot be the same as old password"})
 
-        checkUser.password = password
+        // Hash the new password before saving
+        const hashedPassword = await hash.encrypt(password);
+        checkUser.password = hashedPassword;
+
         await checkUser.save()
         res.status(200).json({message: "Password changed successfully"})
         await sendMail({
